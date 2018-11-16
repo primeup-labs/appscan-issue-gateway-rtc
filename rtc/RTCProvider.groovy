@@ -125,7 +125,7 @@ class RTCProvider implements IProvider {
 				changeRequest = getChangeRequest(workItemURL, createWorkItemConnection.getInputStream(), errors)				
 
 				File issueDetails = appscanIssue.issueDetails
-				String attachmentURL = uploadAttachment(attr.serverUrl, attr.username, attr.password, attr.projectAreaId, issueDetails, "IssueDetails-" + appscanIssue.get("Id") + ".html", null, errors)
+				String attachmentURL = uploadAttachment(attr.serverUrl, attr.username, attr.password, attr.projectAreaId, issueDetails, String.format(Constants.FILE_NAME, appscanIssue.get("Id")), null, errors)
 
 				changeRequest.dcDescription = attr.description				
 				changeRequest.attachmentURL = attachmentURL
@@ -168,7 +168,7 @@ class RTCProvider implements IProvider {
 	private String uploadAttachment(String serverURL, String username, String password, String projectAreaUUID, File file, String fileName, String authString, List<String> errors) throws IOException, URISyntaxException {
 		HttpURLConnection urlConnection = null
 		try {
-			String attachmentUploadUrl = serverURL+ "/service/com.ibm.team.workitem.service.internal.rest.IAttachmentRestService/?projectId=${projectAreaUUID}&multiple=true"
+			String attachmentUploadUrl = String.format(Constants.ATTACHMENT_UPLOAD_URL, serverURL, projectAreaUUID)
 			urlConnection = connection.sendOctetStreamFileUploadDocument(serverURL,attachmentUploadUrl, username,  password, file, fileName, authString)
 
 			String response = urlConnection.content.text

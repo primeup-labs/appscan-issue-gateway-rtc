@@ -24,6 +24,8 @@ public class RTCConstants {
 	static final String OSLC_CORE_VERSION_HEADER = "OSLC-Core-Version"
 	static final String OSLC_VERSION = "2.0"
 	static final String FILED_AGAINST_PROPERTY = "filedAgainst"
+	static final String FILE_NAME = "IssueDetails-%s.html"
+	static final String ATTACHMENT_UPLOAD_URL = "%s/service/com.ibm.team.workitem.service.internal.rest.IAttachmentRestService/?projectId=%s&multiple=true"
 
 	//Provider name
 	static final String PROVIDER_NAME = "rtc"

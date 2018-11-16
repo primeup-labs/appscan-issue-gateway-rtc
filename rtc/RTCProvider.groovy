@@ -115,7 +115,6 @@ class RTCProvider implements IProvider {
 			StringWriter changeRequestData = new StringWriter()
 			changeRequest.writeXML(changeRequestData)
 
-
 			//prepares connection and submit issue
 			HttpURLConnection createWorkItemConnection = connection.sendSecureDocument(attr.serverUrl, attr.workItemCreation, attr.username, attr.password, changeRequestData.toString(), ServerCommunication.METHOD_POST)
 
@@ -126,14 +125,14 @@ class RTCProvider implements IProvider {
 				changeRequest = getChangeRequest(workItemURL, createWorkItemConnection.getInputStream(), errors)				
 
 				File issueDetails = appscanIssue.issueDetails
-				String attachmentURL = uploadAttachment(attr.serverUrl, attr.username, attr.password, changeRequest.contextId, issueDetails, "IssueDetails-" + appscanIssue.get("Id") + ".html", null, errors)
+				String attachmentURL = uploadAttachment(attr.serverUrl, attr.username, attr.password, attr.projectAreaId, issueDetails, "IssueDetails-" + appscanIssue.get("Id") + ".html", null, errors)
 
 				changeRequest.dcDescription = attr.description				
 				changeRequest.attachmentURL = attachmentURL
 	
 				changeRequestData = new StringWriter()
 				changeRequest.writeXML(changeRequestData)
-	
+
 				HttpURLConnection updateWorkItemConnection = connection.sendSecureDocument(attr.serverUrl, workItemURL, attr.username, attr.password, changeRequestData.toString(), ServerCommunication.METHOD_PUT, null)
 
 				if(updateWorkItemConnection.responseCode != 200) {
@@ -177,10 +176,9 @@ class RTCProvider implements IProvider {
 				throw new Exception(response)
 			}
 			Object jsonObj = new JsonSlurper().parseText(response.substring(response.indexOf("[") + 1, response.lastIndexOf("]")))
-
 			return jsonObj["url"]
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			try {
 				errors.add("An error occured while communicating with tracking system on Upload: " + ((HttpURLConnection)urlConnection).errorStream.text)
 			} catch (Exception f) {

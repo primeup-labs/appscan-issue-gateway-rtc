@@ -106,7 +106,6 @@ class ServerCommunication {
 		if (!METHOD_POST.equals(type) && !METHOD_PUT.equals(type)) {
 			type = METHOD_POST;
 		}
-
 		HttpURLConnection urlConnection = prepareConnection(url, data, authString, type)
 		urlConnection.connect()
 		

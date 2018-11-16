@@ -29,6 +29,7 @@ class RDFUtil {
 	final String SERVICE_PROVIDER_XPATH = "//oslc:ServiceProvider/dcterms:title/text()[ . = '%s']/ancestor::oslc:serviceProvider/oslc:ServiceProvider/@rdf:about"
 	final String WORK_ITEM_CREATION_XPATH = "//oslc:creationFactory/oslc:CreationFactory/oslc:resourceType['%s' = substring(@rdf:resource, string-length(@rdf:resource) - string-length('%s') +1)]/ancestor::oslc:CreationFactory/oslc:creation/@rdf:resource"
 	final String WORK_ITEM_RESOURCE_SHAPE_XPATH = "//oslc:creationFactory/oslc:CreationFactory/oslc:resourceType['%s' = substring(@rdf:resource, string-length(@rdf:resource) - string-length('%s') +1)]/ancestor::oslc:CreationFactory/oslc:resourceShape/@rdf:resource"
+	final String PROJECT_AREA_ID_XPATH = "//oslc:ServiceProvider/dcterms:title/text()[ . = '%s']/ancestor::oslc:ServiceProvider/oslc:details/@rdf:resource"
 	
 	final String ALLOWED_VALUE_XPATH = "//oslc:allowedValue/@rdf:resource"
 
@@ -46,6 +47,7 @@ class RDFUtil {
 	String workItemCreationXPath
 	String workItemResourceShapeXPath
 	
+	String projectAreaId
 	String serviceProvidersURL
 	String serviceProviderURL
 	String workItemCreationURL
@@ -70,12 +72,15 @@ class RDFUtil {
 		serviceProviderXPath = String.format(SERVICE_PROVIDER_XPATH, projectArea)
 		workItemCreationXPath = String.format(WORK_ITEM_CREATION_XPATH, workItemType, workItemType)
 		workItemResourceShapeXPath = String.format(WORK_ITEM_RESOURCE_SHAPE_XPATH, workItemType, workItemType)		
-				
+		
 		serviceProvidersURL = extractFromDocument( rootServicesURL, SERVICE_PROVIDERS_XPATH)
 		serviceProviderURL = extractFromDocument( serviceProvidersURL, serviceProviderXPath)
 		workItemCreationURL = extractFromDocument( serviceProviderURL, workItemCreationXPath)
-		workItemResourceShapeURL = extractFromDocument( serviceProviderURL, workItemResourceShapeXPath)
 		
+		String temp = extractFromDocument( serviceProvidersURL, String.format(PROJECT_AREA_ID_XPATH, projectArea))
+		projectAreaId =  temp.substring(temp.lastIndexOf("/") + 1, temp.length())
+			
+		workItemResourceShapeURL = extractFromDocument( serviceProviderURL, workItemResourceShapeXPath)
 	}
 	
 	/**

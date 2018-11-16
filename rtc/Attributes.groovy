@@ -69,6 +69,14 @@ class Attributes {
 		return rdfUtil.workItemCreationURL
 	}
 	
+	/**
+	 * Get project area ID
+	 * @return String to project area ID
+	 */
+	String getProjectAreaId() {
+		return rdfUtil.projectAreaId
+	}
+	
 	String setFiledAgaint(String categoryName) {
 		if (categoryName != null && !categoryName.isEmpty()) {
 			this.categoryName = rdfUtil.getValueURL(categoryName, "filedAgainst", "dcterms:title")
